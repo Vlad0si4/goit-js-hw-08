@@ -38,11 +38,11 @@ const onContactFormSubmit = event => {
 
   if (contactFormReset.elements.email.value === '') {
     alert('Please enter your email.');
-  } 
+  } else {
     localStorageAPI.remove(FEEDBACK_KEY);
     contactFormReset.reset();
     console.log(userInfo);
-  
+  };
 };
 feedbackForm.addEventListener('input', debounce(onContactFormFieldInput, 500));
 feedbackForm.addEventListener('submit', onContactFormSubmit)
