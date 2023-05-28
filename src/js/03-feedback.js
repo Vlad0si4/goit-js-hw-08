@@ -36,7 +36,13 @@ const onContactFormSubmit = event => {
   event.preventDefault();
   const contactFormReset = event.target;
 
-  if (contactFormReset.elements.email.value === '') {
+  for (const key in userInfo) { 
+    if (feedbackForm.elements[key].value === '') {
+      delete userInfo.message
+    }
+  }
+   
+ if (contactFormReset.elements.email.value === '') {
     alert('Please enter your email.');
   } else {
     localStorageAPI.remove(FEEDBACK_KEY);
