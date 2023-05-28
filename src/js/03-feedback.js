@@ -1,4 +1,4 @@
-const debounce = require('lodash.debounce');
+import throttle from 'lodash.throttle';
 import localStorageAPI from './localstorage.js';
 
 const feedbackForm = document.querySelector('.feedback-form');
@@ -15,7 +15,8 @@ const fillContactFormFields = () => {
   }
 
     for (const key in userInfoFromLS) {
-    feedbackForm.elements[key].value = userInfoFromLS[key]
+      feedbackForm.elements[key].value = userInfoFromLS[key];
+      userInfo[key] = userInfoFromLS[key];
   };
 }
 
@@ -32,23 +33,21 @@ const onContactFormFieldInput = event => {
   
 }
 
+
 const onContactFormSubmit = event => {
   event.preventDefault();
-  const contactFormReset = event.target;
+  
 
   for (const key in userInfo) { 
     if (feedbackForm.elements[key].value === '') {
-      delete userInfo.message
+      delete userInfo[key]
     }
   }
-   
- if (contactFormReset.elements.email.value === '') {
-    alert('Please enter your email.');
-  } else {
+    const contactFormReset = event.target;
     localStorageAPI.remove(FEEDBACK_KEY);
     contactFormReset.reset();
     console.log(userInfo);
   };
-};
-feedbackForm.addEventListener('input', debounce(onContactFormFieldInput, 500));
+
+feedbackForm.addEventListener('input', throttle(onContactFormFieldInput, 500));
 feedbackForm.addEventListener('submit', onContactFormSubmit)
