@@ -1,5 +1,7 @@
 import throttle from 'lodash.throttle';
 import localStorageAPI from './localstorage.js';
+const email = document.querySelector("input")
+const message = document.querySelector("textarea")
 
 const feedbackForm = document.querySelector('.feedback-form');
 
@@ -33,21 +35,25 @@ const onContactFormFieldInput = event => {
   
 }
 
-
 const onContactFormSubmit = event => {
-  event.preventDefault();
-  
+if (email.value === '' || message.value === '') {
+    return alert('Fill all the fields please');
+  }
 
-  for (const key in userInfo) { 
+  event.preventDefault();
+  const contactFormReset = event.target;
+
+  contactFormReset.reset();
+  console.log(userInfo);
+  
+      for (const key in userInfo) {
     if (feedbackForm.elements[key].value === '') {
       delete userInfo[key]
-    }
+      }
   }
-    const contactFormReset = event.target;
     localStorageAPI.remove(FEEDBACK_KEY);
-    contactFormReset.reset();
-    console.log(userInfo);
   };
+
 
 feedbackForm.addEventListener('input', throttle(onContactFormFieldInput, 500));
 feedbackForm.addEventListener('submit', onContactFormSubmit)
